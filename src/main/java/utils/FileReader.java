@@ -5,6 +5,7 @@ import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Reader;
 import java.nio.file.Files;
@@ -28,4 +29,35 @@ public class FileReader {
         String content = new String(Files.readAllBytes(Paths.get(jsonFile)));
         return new JSONObject(content);
     }
+    
+    
+ // Method to read links from a CSV file
+    public static List<String> readLinksFromCSV(String filePath) {
+        List<String> links = new ArrayList<>();
+        try (BufferedReader br = new BufferedReader(new java.io.FileReader(filePath))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                links.add(line);  // Add each link to the list
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return links;
+    }
+    
+ // Method to read CSV file and return as a list of rows (String[])
+    public static List<String[]> readCSV1(String filePath) {
+        List<String[]> rows = new ArrayList<>();
+        try (BufferedReader br = new BufferedReader(new java.io.FileReader(filePath))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                rows.add(line.split(","));
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return rows;
+    }
+
+    
 }

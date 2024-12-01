@@ -15,7 +15,7 @@ public class WaitUtils {
     // Constructor to initialize WebDriver and WebDriverWait
     public WaitUtils(WebDriver driver) {
         this.driver = driver;
-        this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        this.wait = new WebDriverWait(driver, Duration.ofSeconds(10)); // Use Duration to avoid deprecation
     }
 
     // Method to wait for an element to be visible
@@ -43,6 +43,4 @@ public class WaitUtils {
         wait.until(ExpectedConditions.textToBePresentInElementLocated(locator, text)); // Wait for the text
         return wait.until(ExpectedConditions.presenceOfElementLocated(locator));      // Return the WebElement
     }
-
 }
-

@@ -10,34 +10,39 @@ public class Driver {
     private static WebDriver driver;
     private static WebDriverWait wait;
 
-    // Method to initialize WebDriver and WebDriverWait
+    // Private constructor to prevent instantiation
+    private Driver() {}
+
+    // Initialize WebDriver and WebDriverWait
     public static void initializeDriver() {
-        if (driver == null) {
-            driver = new ChromeDriver();
-            wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        if (driver == null) {  // Only initialize if driver is null
+            driver = new ChromeDriver();  // Create a new ChromeDriver instance
+            wait = new WebDriverWait(driver, Duration.ofSeconds(10));  // Set up wait
         }
     }
 
-    // Method to get WebDriver
+    // Get WebDriver instance
     public static WebDriver getDriver() {
         if (driver == null) {
-            initializeDriver();
+            initializeDriver();  // Ensure driver is initialized
         }
         return driver;
     }
 
-    // Method to get WebDriverWait
+    // Get WebDriverWait instance
     public static WebDriverWait getWait() {
         if (wait == null) {
-            initializeDriver();
+            initializeDriver();  // Ensure wait is initialized with driver
         }
         return wait;
     }
 
-    // Method to close the driver
+    // Close the WebDriver instance
     public static void closeDriver() {
         if (driver != null) {
-            driver.quit();
+            driver.quit();  // Close the browser and end the session
+            driver = null;  // Reset the driver reference for future use
+            wait = null;    // Reset wait reference to avoid memory leaks
         }
     }
 }
