@@ -29,9 +29,8 @@ public class FileReader {
         String content = new String(Files.readAllBytes(Paths.get(jsonFile)));
         return new JSONObject(content);
     }
-    
-    
- // Method to read links from a CSV file
+
+    // Method to read links from a CSV file
     public static List<String> readLinksFromCSV(String filePath) {
         List<String> links = new ArrayList<>();
         try (BufferedReader br = new BufferedReader(new java.io.FileReader(filePath))) {
@@ -44,8 +43,7 @@ public class FileReader {
         }
         return links;
     }
-    
- // Method to read CSV file and return as a list of rows (String[])
+
     public static List<String[]> readCSV1(String filePath) {
         List<String[]> rows = new ArrayList<>();
         try (BufferedReader br = new BufferedReader(new java.io.FileReader(filePath))) {
@@ -58,6 +56,4 @@ public class FileReader {
         }
         return rows;
     }
-
-    
 }

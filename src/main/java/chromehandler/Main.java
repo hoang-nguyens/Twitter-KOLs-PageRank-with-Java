@@ -7,7 +7,7 @@ import java.util.Set;
 
 import org.openqa.selenium.WebDriver;
 
-
+import findcomments.FindCommentsUsers;
 import findfollows.AccountSwitcherProcessor;
 import findfollows.LinkProcessor;
 import findkols.AccountSwitcherAndScraper;
@@ -61,6 +61,44 @@ public class Main {
 //
 //        // Step 4: Call the method to process multiple CSV files
 //        processor.processMultipleCSVFiles(csvFiles);
+		
+		
+		int startIndex = 638;
+        int batchSize = 3; // Number of KOLs to process per iteration
+        int totalIterations = 50;
+        int accountsCount = 5; // Total accounts available for login
+        LoginManager login = new LoginManager();
+        for (int i = 0; i < totalIterations; i++) {
+            int accountIndex = i % accountsCount; // Cycle through accounts
+            try {
+                // Login using the appropriate account index (implement login logic in Driver)
+                login.login("hihihahade31600", "stopthis"); // Assuming login(int accountIndex) is defined in the Driver class
+
+                // Create an instance of FindCommentsUsers to process the data
+                FindCommentsUsers findComments = new FindCommentsUsers();
+                findComments.processKOLsData(
+                        "D:\\OOP Project 2024.1\\projecttest\\result.csv",
+                        startIndex,
+                        startIndex + batchSize - 1
+                );
+
+                // Update the start index for the next batch
+                startIndex += batchSize;
+                System.out.println("Processed up to startIndex: " + startIndex);
+            } catch (Exception e) {
+                System.err.println("Error during iteration " + i + ": " + e.getMessage());
+                e.printStackTrace();
+            } finally {
+                // Ensure the driver is closed after each iteration to free resources
+                if (Driver.getDriver() != null) {
+                    try {
+                        Driver.getDriver().quit();
+                    } catch (Exception e) {
+                        System.err.println("Error closing driver: " + e.getMessage());
+                    }
+                }
+            }
+        }
 		
 	}
 
