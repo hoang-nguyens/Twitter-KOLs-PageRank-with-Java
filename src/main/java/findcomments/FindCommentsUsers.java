@@ -21,6 +21,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import chromehandler.Driver;
+import chromehandler.LoginManager;
 import chromehandler.TabManager;
 import chromehandler.WaitUtils;
 import utils.InfoHandling;
@@ -30,13 +31,72 @@ public class FindCommentsUsers {
 	private static WebDriver driver;
     private static WaitUtils waitUtils;
     private static WebDriverWait wait;
+    private LoginManager loginManager;
+    
+    private List<String> usernames;
+    private List<String> passwords;
   
     // Constructor - WebDriver and WaitUtils are initialized via the Driver class
-    public FindCommentsUsers() {
-        this.driver = Driver.getDriver(); // Get driver from Driver class
-        this.waitUtils = new WaitUtils(driver); // Initialize WaitUtils with the driver
-        this.wait= Driver.getWait();
+    public FindCommentsUsers(List<String> usernames, List<String> passwords) {
+//        this.driver = Driver.getDriver(); // Get driver from Driver class
+//        this.waitUtils = new WaitUtils(driver); // Initialize WaitUtils with the driver
+//        this.wait= Driver.getWait();
+    	this.usernames = usernames;
+    	this.passwords = passwords;
+        this.loginManager = new LoginManager(driver, waitUtils);
     }
+    
+    public void processWithAccountSwitching(
+    	    String filePath, 
+    	    int startIndex, 
+    	    int totalRows, 
+    	    int batchSize
+    	) {
+    	    int accountIndex = 0;
+    	    int currentIndex = startIndex;
+
+    	    while (currentIndex < totalRows) {
+    	        // Get the current account credentials
+    	        String username = usernames.get(accountIndex);
+    	        String password = passwords.get(accountIndex);
+
+    	        // Initialize login manager and login
+//    	        LoginManager loginManager = new LoginManager();
+    	        
+    	        loginManager.login(username, password);
+    	        driver = loginManager.driver;
+//    	        waitUtils = new WaitUtils(driver);
+    	        waitUtils = loginManager.waitUtils;
+
+    	        System.out.println("Logged in with: " + username);
+
+    	        // Calculate endIndex for the current batch
+    	        int endIndex = Math.min(currentIndex + batchSize - 1, totalRows - 1);
+
+    	        // Process data for this batch
+    	        try {
+    	            FindCommentsUsers.processKOLsData(filePath, currentIndex, endIndex);
+    	        } catch (Exception e) {
+    	            System.err.println("Error processing data from index " + currentIndex + " to " + endIndex + ": " + e.getMessage());
+    	        }
+
+    	        // Logout and prepare for the next account
+    	        loginManager.logout();
+    	        driver.quit();
+    	        System.out.println("Logged out of: " + username);
+
+    	        // Move to the next account
+    	        accountIndex = (accountIndex + 1) % usernames.size();
+
+    	        // Update the current index for the next batch
+    	        currentIndex += batchSize;
+    	    }
+
+    	    // Close the driver after all processing is complete
+    	    Driver.closeDriver();
+    	    System.out.println("Driver closed after processing all data.");
+    	}
+
 	
     public static void processKOLsData(String filePath, int startIndex, int endIndex) {
 	    List<String[]> rows = utils.FileReader.readCSV1(filePath); // Assuming readCSV method exists to read the CSV data.
@@ -143,6 +203,7 @@ public class FindCommentsUsers {
 	
     
     public static Map<String, Set<String>> findTweetsAndRetweetsComment(String link) {
+    	TabManager.driver = driver;
 	    TabManager.openTab(link);
 
 	    Set<String> userNamesSet = new HashSet<>();
@@ -156,7 +217,7 @@ public class FindCommentsUsers {
 	        Thread.currentThread().interrupt(); // Restore interrupted status
 	    }
 
-	    for (int i = 0; i < 3; i++) {
+	    for (int i = 0; i < 1; i++) {
 	        waitUtils.waitForVisibilityOfElement(By.cssSelector("[data-testid='User-Name']"));
 
 	        List<WebElement> usersComment = driver.findElements(By.cssSelector("[data-testid='User-Name']"));
@@ -222,6 +283,7 @@ public class FindCommentsUsers {
     
     
 	public static Map<String, Object> findTweetsAndRetweetsWithLinks(String link) {
+		TabManager.driver = driver;
         TabManager.openTab(link);
 
         // Extract follower count as a string
@@ -249,7 +311,7 @@ public class FindCommentsUsers {
         }
 
         // Loop to keep scrolling and collecting tweets
-        for (int i = 0; i < 3; i++) { // Adjust the number of iterations to load more tweets
+        for (int i = 0; i < 1; i++) { // Adjust the number of iterations to load more tweets
             waitUtils.waitForVisibilityOfElement(By.cssSelector("[data-testid='tweet']"));
 
             // Collect current tweets

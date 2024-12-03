@@ -7,10 +7,20 @@ import org.openqa.selenium.WebDriver;
 import java.util.Set;
 
 public class TabManager {
+	
+	public static WebDriver driver;
+	
+	public TabManager() {
+		
+	}
+	
+	public TabManager(WebDriver driver) {
+		this.driver = driver;
+	}
 
     // Open a new tab with the specified URL
     public static void openTab(String url) {
-        WebDriver driver = Driver.getDriver();  // Get the WebDriver instance
+//        WebDriver driver = Driver.getDriver();  // Get the WebDriver instance
 
         // Open the new tab using JavascriptExecutor
         ((JavascriptExecutor) driver).executeScript("window.open('" + url + "','_blank');");
@@ -38,7 +48,7 @@ public class TabManager {
 
     // Close all tabs except the original one
     public static void closeTabsExceptOriginal() {
-        WebDriver driver = Driver.getDriver();  // Get the WebDriver instance
+//        WebDriver driver = Driver.getDriver();  // Get the WebDriver instance
 
         // Get the original tab and all open window handles
         String originalTab = driver.getWindowHandle();

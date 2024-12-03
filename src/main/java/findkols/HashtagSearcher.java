@@ -22,6 +22,11 @@ public class HashtagSearcher {
         this.driver = Driver.getDriver(); // Get driver from Driver class
         this.waitUtils = new WaitUtils(driver); // Initialize WaitUtils with the driver
     }
+    
+    public HashtagSearcher(WebDriver driver, WaitUtils waitUtils) {
+    	this.driver = driver;
+    	this.waitUtils = waitUtils;
+    }
 
     // Method to search for a hashtag and click on 'People' filter
     public void searchAndFilterByHashtag(String hashtag, String keyword) {

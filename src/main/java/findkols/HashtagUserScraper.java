@@ -24,6 +24,13 @@ public class HashtagUserScraper {
         this.hashtagSearcher = new HashtagSearcher(); // Initialize HashtagSearcher
         this.fileWriter = new FileWriters(); // Initialize FileWriter
     }
+    
+    public HashtagUserScraper(WebDriver driver, WaitUtils waitUtils) {
+    	this.driver = driver;
+    	this.waitUtils = waitUtils;
+    	this.hashtagSearcher = new HashtagSearcher(driver, waitUtils);
+    	this.fileWriter = new FileWriters();
+    }
 
     // Method to scrape users from hashtags
     public void scrapeUsersFromHashtags(List<String> keywords, int numLoops) {

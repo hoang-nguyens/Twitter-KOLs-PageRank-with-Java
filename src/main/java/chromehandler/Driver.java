@@ -28,6 +28,14 @@ public class Driver {
         }
         return driver;
     }
+    
+    public static WebDriver getNewDriver() {
+    	return new ChromeDriver();
+    }
+    
+    public static WebDriverWait getNewWait() {
+    	return new WebDriverWait(Driver.getNewDriver(), Duration.ofSeconds(10));
+    }
 
     // Get WebDriverWait instance
     public static WebDriverWait getWait() {

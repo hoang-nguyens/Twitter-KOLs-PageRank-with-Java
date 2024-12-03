@@ -6,17 +6,24 @@ import org.openqa.selenium.WebElement;
 
 public class LoginManager {
 
-    private WebDriver driver;
-    private WaitUtils waitUtils;
+    public WebDriver driver;
+    public WaitUtils waitUtils;
 
     // Constructor - WebDriver and WebDriverWait are provided by Driver class
     public LoginManager() {
         this.driver = Driver.getDriver();
         this.waitUtils = new WaitUtils(driver);
     }
+    
+    public LoginManager(WebDriver driver, WaitUtils waitUtils) {
+    	this.driver = driver;
+    	this.waitUtils = waitUtils;
+    }
 
     // Method to log in to Twitter
     public void login(String username, String password) {
+    	driver = Driver.getNewDriver();
+    	waitUtils = new WaitUtils(driver);
         driver.get("https://twitter.com/login");
 
         // Enter username
@@ -34,5 +41,9 @@ public class LoginManager {
         // Click Login button
         WebElement loginButton = waitUtils.waitForElementToBeClickable(By.cssSelector("[data-testid=\"LoginForm_Login_Button\"][type=\"button\"]"));
         loginButton.click();
+    }
+    
+    public void logout() {
+    	this.driver.quit();
     }
 }
