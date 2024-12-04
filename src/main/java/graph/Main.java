@@ -5,6 +5,7 @@ import org.json.JSONObject;
 import utils.FileReader;
 
 import java.util.List;
+import java.util.Map;
 
 public class Main {
     public static void main(String[] args) {
@@ -25,12 +26,22 @@ public class Main {
             // Read JSON and build graph
             JSONObject jsonObject = fileReader.readJSON(jsonFile);
             graphBuilder.buildGraphFromJSON(jsonObject);
+            
+            
+//            System.out.println(graph.getNodeCount());
 
             // Visualize graph or compute PageRank
-            System.out.println("Graph structure: " + graph.getGraph());
+//            System.out.println("Graph structure: " + graph.getGraph());
             
-            GraphVisualizer visualizer = new GraphVisualizer(graph);
-            visualizer.visualize();
+//         // Step 3: Compute PageRank
+            PageRank pageRank = new PageRank(graph);
+            Map<String, Double> pageRankScores = pageRank.calculatePageRank();
+//
+            // Step 4: Display the results
+            System.out.println("PageRank Scores:");
+            for (Map.Entry<String, Double> entry : pageRankScores.entrySet()) {
+                System.out.println("Node: " + entry.getKey() + ", PageRank: " + entry.getValue());
+            }
 
         } catch (Exception e) {
             e.printStackTrace();

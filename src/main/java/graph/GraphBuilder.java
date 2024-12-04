@@ -64,6 +64,7 @@ public class GraphBuilder {
                     graph.addNode(kol);
                     graph.addEdge(commentor, tweetId);
                     graph.addEdge(kol, tweetId);
+                    graph.addEdge(tweetId, kol);
                 }
             }
 
@@ -76,7 +77,7 @@ public class GraphBuilder {
                     graph.addNode(commentor);
                     graph.addNode(kol);
                     graph.addEdge(commentor, tweetId);
-                    graph.addEdge(kol, tweetId);
+                    graph.addEdge(tweetId, kol);
                 }
             }
 
@@ -88,6 +89,7 @@ public class GraphBuilder {
                 graph.addNode(kol);
                 graph.addEdge(repostedBy, tweetId);
                 graph.addEdge(kol, tweetId);
+                graph.addEdge(tweetId, kol);
             }
         }
     }
