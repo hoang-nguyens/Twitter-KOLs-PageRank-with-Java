@@ -53,7 +53,16 @@ public class PageRank {
 
                 // For each inbound edge, distribute the rank
                 for (String neighbor : graph.getGraph().get(node)) {
-                    sum += previousRanks.get(neighbor) / graph.getOutDegree(neighbor);
+                    int outDegree = graph.getOutDegree(neighbor);
+                    
+                    // Prevent division by zero
+                    if (outDegree != 0) {
+                        sum += previousRanks.get(neighbor) / outDegree;
+                    } else {
+                        // Handle dangling nodes by adding their rank to the total sum
+                        System.out.println(neighbor + " is a dangling node with no outgoing edges.");
+                        sum += previousRanks.get(neighbor) / graph.getNodeCount(); // Redistribute rank evenly across all nodes
+                    }
                 }
 
                 // Add the contribution from dangling nodes
