@@ -30,8 +30,6 @@ public class FindFollowersAndSwitchAccount {
 
     // Constructor to initialize dependencies and WebDriver
     public FindFollowersAndSwitchAccount(List<String> usernames, List<String> passwords) {
-//        this.driver = Driver.getDriver();
-//        this.wait = Driver.getWait();
         this.usernames = usernames;
         this.passwords = passwords;
         this.loginManager = new LoginManager(driver, waitUtils);
@@ -171,6 +169,7 @@ public class FindFollowersAndSwitchAccount {
                 // Handle any error, log it, and proceed to the next link
                 System.err.println("Error processing link: " + link);
                 e.printStackTrace();
+                continue;
             } finally {
                 // Close all tabs except the original one to save memory
                 TabManager.closeTabsExceptOriginal();

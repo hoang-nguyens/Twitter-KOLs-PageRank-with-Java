@@ -88,6 +88,8 @@ public class PageRank {
 
         return ranks;  // Return the rank of all nodes
     }
+    
+    
 
     // Get the rank of a specific user
     public double getRankOfUser(String user, Map<String, Double> ranks) {

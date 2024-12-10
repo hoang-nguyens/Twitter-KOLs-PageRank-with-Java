@@ -38,9 +38,7 @@ public class FindCommentsUsers {
   
     // Constructor - WebDriver and WaitUtils are initialized via the Driver class
     public FindCommentsUsers(List<String> usernames, List<String> passwords) {
-//        this.driver = Driver.getDriver(); // Get driver from Driver class
-//        this.waitUtils = new WaitUtils(driver); // Initialize WaitUtils with the driver
-//        this.wait= Driver.getWait();
+
     	this.usernames = usernames;
     	this.passwords = passwords;
         this.loginManager = new LoginManager(driver, waitUtils);
